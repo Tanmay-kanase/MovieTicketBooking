@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
+import { AuthContext } from "../context/AuthContext";
 
 const Home = () => {
   const navigate = useNavigate();
+  const { user, logout } = useContext(AuthContext);
   const featuredMovies = [
     {
       id: 101,
@@ -66,7 +68,7 @@ const Home = () => {
     },
   ];
 
-  const [searchQuery, setSearchQuery] = useState("");
+  // const [searchQuery, setSearchQuery] = useState("");
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -81,32 +83,67 @@ const Home = () => {
     <div className="home-container">
       {/* Navbar Section */}
       <nav className="navbar">
-        <div className="nav-brand">
+        <div
+          className="nav-brand"
+          onClick={() => navigate("/")}
+          style={{ cursor: "pointer" }}
+        >
           <span className="logo-text">
             Ticket<span className="text-red">Hub</span>
           </span>
         </div>
 
-        <div className="nav-search">
-          <input
-            type="text"
-            placeholder="Search for movies, events, plays..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-input"
-          />
-          <button className="search-btn">Search</button>
-        </div>
+        <div className="nav-search">{/* Search Inputs... */}</div>
 
         <div className="nav-actions">
-          <button
-            className="btn-outline"
-            onClick={() => {
-              navigate("signin");
-            }}
-          >
-            Sign In
-          </button>
+          {/* CONDITIONAL RENDERING STARTS HERE */}
+          {user ? (
+            // WHAT THE LOGGED-IN USER SEES
+            <div className="user-menu">
+              <button
+                className="nav-link-btn"
+                onClick={() => navigate("/my-tickets")}
+              >
+                My Tickets
+              </button>
+              <button
+                className="nav-link-btn"
+                onClick={() => navigate("/payments")}
+              >
+                Payments
+              </button>
+
+              <div className="profile-dropdown">
+                <button className="profile-btn">
+                  {/* Display the first letter of their name */}
+                  <div className="avatar-circle">
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <span>{user.name}</span>
+                </button>
+
+                {/* A simple CSS-based dropdown menu */}
+                <div className="dropdown-content">
+                  <button onClick={() => navigate("/profile")}>
+                    My Profile
+                  </button>
+                  <button onClick={logout} className="text-red">
+                    Logout
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <button
+              className="btn-outline"
+              onClick={() => {
+                navigate("/signin");
+              }}
+            >
+              Sign In
+            </button>
+          )}
+          {/* CONDITIONAL RENDERING ENDS HERE */}
         </div>
       </nav>
 

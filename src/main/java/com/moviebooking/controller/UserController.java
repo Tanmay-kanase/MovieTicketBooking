@@ -62,4 +62,17 @@ public class UserController {
                     .body(Map.of("isNewUser", false, "user", user));
         }
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout() {
+        ResponseCookie cleanCookie = ResponseCookie.from("movie_auth_token", "") // <-- Check your cookie name
+                .path("/")
+                .httpOnly(true)
+                .maxAge(0)
+                .build();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cleanCookie.toString())
+                .body(Map.of("message", "You've been successfully logged out"));
+    }
 }

@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import axiosInstance from "../../config/axiosConfig";
-import "./SignIn.css";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Signin.css";
+import { AuthContext } from "../../context/AuthContext";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -10,6 +13,8 @@ const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [newGoogleUser, setNewGoogleUser] = useState(null);
   const [newPassword, setNewPassword] = useState("");
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
   const clientId =
     "543095501152-ijjcpgtomrp7lsmc7rba2mpujmtirh24.apps.googleusercontent.com";
 
@@ -25,7 +30,8 @@ const SignIn = () => {
       });
 
       console.log("Login successful:", response.data);
-      window.location.href = "/dashboard";
+      login(response.data.user);
+      navigate("/");
     } catch (err) {
       if (err.response && err.response.status === 401) {
         setError("Invalid email or password.");
@@ -52,7 +58,8 @@ const SignIn = () => {
         });
       } else if (response.status === 200) {
         console.log("Google Login successful:", response.data);
-        window.location.href = "/dashboard";
+        login(response.data.user);
+        navigate("/");
       }
     } catch {
       setError("Google authentication failed. Please try again.");
