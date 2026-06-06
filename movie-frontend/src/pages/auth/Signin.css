@@ -1,4 +1,3 @@
-/* Base container taking up full height, subtle off-white background to make the card pop */
 .signin-container {
   display: flex;
   justify-content: center;
@@ -8,7 +7,6 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* White card with soft shadow */
 .signin-card {
   background-color: #ffffff;
   width: 100%;
@@ -16,7 +14,7 @@
   padding: 40px;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  border-top: 5px solid #d32f2f; /* Bold red accent at the top */
+  border-top: 5px solid #d32f2f; 
 }
 
 .signin-title {
@@ -102,7 +100,6 @@
   background-color: #b71c1c;
 }
 
-/* Divider for OR section */
 .divider {
   display: flex;
   align-items: center;
