@@ -4,6 +4,9 @@ import com.moviebooking.models.User;
 import com.moviebooking.service.UserService;
 import com.moviebooking.util.JwtUtils;
 import jakarta.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -15,13 +18,11 @@ import java.util.Map;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserService userService;
-    private final JwtUtils jwtUtils;
+    @Autowired
+    private UserService userService;
 
-    public UserController(UserService userService, JwtUtils jwtUtils) {
-        this.userService = userService;
-        this.jwtUtils = jwtUtils;
-    }
+    @Autowired
+    private JwtUtils jwtUtils;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody User user, HttpServletResponse response) {
@@ -74,5 +75,29 @@ public class UserController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cleanCookie.toString())
                 .body(Map.of("message", "You've been successfully logged out"));
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(
+            @PathVariable Long id,
+            @RequestBody User updatedUser) {
+
+        User user = userService.updateUser(id, updatedUser);
+
+        return ResponseEntity.ok(
+                Map.of(
+                        "message", "User updated successfully",
+                        "user", user));
     }
 }
