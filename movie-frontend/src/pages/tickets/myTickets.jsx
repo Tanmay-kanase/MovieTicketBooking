@@ -4,7 +4,7 @@ import "./myTickets.css";
 import HomeNav from "../HomeNav";
 import { AuthContext } from "../../context/AuthContext";
 import axiosInstance from "../../config/axiosConfig";
-
+import jsPDF from "jspdf";
 const MyTickets = () => {
   const { user, isLoading } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -12,7 +12,119 @@ const MyTickets = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [downloadingId, setDownloadingId] = useState(null);
+  const downloadTicketPDF = async (ticket) => {
+    console.log("Ticket Data:", ticket);
+    try {
+      setDownloadingId(ticket.id);
 
+      const pdf = new jsPDF("landscape", "mm", [80, 180]);
+
+      // Ticket dimensions
+      const width = 180;
+      const height = 80;
+
+      // Outer border
+      pdf.setDrawColor(0);
+      pdf.setLineWidth(0.5);
+      pdf.roundedRect(5, 5, width - 10, height - 10, 3, 3);
+
+      // Header background
+      pdf.setFillColor(30, 41, 59);
+      pdf.rect(5, 5, width - 10, 15, "F");
+
+      // App Name
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(20);
+      pdf.text("TicketHub", 10, 15);
+
+      // Movie Title
+      pdf.setTextColor(0, 0, 0);
+      pdf.setFontSize(18);
+      pdf.text(ticket.movie?.title || "Movie Title", 10, 32);
+
+      // Divider
+      pdf.setDrawColor(150);
+      pdf.line(10, 36, 170, 36);
+
+      // Left section
+      pdf.setFontSize(10);
+      pdf.setFont("helvetica", "bold");
+      pdf.text("THEATER", 10, 45);
+
+      pdf.setFont("helvetica", "normal");
+      pdf.text(ticket.theater?.name || "-", 10, 50);
+
+      pdf.setFont("helvetica", "bold");
+      pdf.text("LOCATION", 10, 58);
+
+      pdf.setFont("helvetica", "normal");
+      pdf.text(ticket.theater?.location || "-", 10, 63);
+
+      // Center section
+      pdf.setFont("helvetica", "bold");
+      pdf.text("SHOW DATE", 75, 45);
+
+      pdf.setFont("helvetica", "normal");
+      pdf.text(
+        ticket.movie?.movieDateTime
+          ? new Date(ticket.movie.movieDateTime).toLocaleDateString()
+          : "-",
+        75,
+        50,
+      );
+
+      pdf.setFont("helvetica", "bold");
+      pdf.text("TIME", 75, 58);
+
+      pdf.setFont("helvetica", "normal");
+      pdf.text(
+        ticket.movie?.movieDateTime
+          ? new Date(ticket.movie.movieDateTime).toLocaleTimeString()
+          : "-",
+        75,
+        63,
+      );
+
+      // Right section
+      pdf.setFont("helvetica", "bold");
+      pdf.text("SEATS", 130, 45);
+
+      pdf.setFont("helvetica", "normal");
+      pdf.text(`${ticket.numberOfTickets}`, 130, 50);
+
+      pdf.setFont("helvetica", "bold");
+      pdf.text("BOOKING ID", 130, 58);
+
+      pdf.setFont("helvetica", "normal");
+      pdf.text(`#${ticket.id}`, 130, 63);
+
+      // Fake barcode
+      let x = 115;
+      for (let i = 0; i < 40; i++) {
+        // eslint-disable-next-line react-hooks/purity
+        const barHeight = 12 + Math.random() * 8;
+        pdf.line(x, 68, x, 68 - barHeight);
+        x += 1.2;
+      }
+
+      // Footer
+      pdf.setFontSize(8);
+      pdf.setTextColor(100);
+      pdf.text(
+        "Please carry a valid ID. Entry subject to theater rules.",
+        10,
+        73,
+      );
+
+      pdf.save(`TicketHub_${ticket.movie?.title || "Movie"}_${ticket.id}.pdf`);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setDownloadingId(null);
+    }
+  };
   useEffect(() => {
     if (isLoading) return;
     if (!user) {
@@ -90,7 +202,11 @@ const MyTickets = () => {
         ) : (
           <div className="tickets-list">
             {tickets.map((ticket) => (
-              <div className="ticket-card" key={ticket.id}>
+              <div
+                className="ticket-card"
+                key={ticket.id}
+                id={`ticket-${ticket.id}`}
+              >
                 <div className="ticket-image-wrapper">
                   <img
                     src={
@@ -110,6 +226,32 @@ const MyTickets = () => {
                     >
                       {ticket.status || "Confirmed"}
                     </span>
+                    <button
+                      className="download-btn-hide-in-pdf"
+                      onClick={() => downloadTicketPDF(ticket)}
+                      disabled={downloadingId === ticket.id}
+                      style={{
+                        backgroundColor:
+                          downloadingId === ticket.id ? "#94a3b8" : "#334155",
+                        color: "white",
+                        border: "none",
+                        padding: "6px 12px",
+                        borderRadius: "20px",
+                        fontSize: "0.8rem",
+                        fontWeight: "bold",
+                        cursor:
+                          downloadingId === ticket.id
+                            ? "not-allowed"
+                            : "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "5px",
+                      }}
+                    >
+                      {downloadingId === ticket.id
+                        ? " Generating..."
+                        : "↓ Download PDF"}
+                    </button>
                   </div>
 
                   <div className="ticket-info-grid">
