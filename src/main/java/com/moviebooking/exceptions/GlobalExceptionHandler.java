@@ -24,4 +24,22 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(Map.of("error", ex.getMessage()));
     }
+
+    public class ResourceNotFoundException extends RuntimeException {
+        public ResourceNotFoundException(String message) {
+            super(message);
+        }
+    }
+
+    public class SeatUnavailableException extends RuntimeException {
+        public SeatUnavailableException(String message) {
+            super(message);
+        }
+    }
+
+    public class PaymentFailedException extends RuntimeException {
+        public PaymentFailedException(String message) {
+            super(message);
+        }
+    }
 }
