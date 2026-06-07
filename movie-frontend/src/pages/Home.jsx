@@ -86,7 +86,14 @@ const Home = () => {
                 <span className="badge">Now Showing</span>
                 <h1>{movies[currentSlide]?.title}</h1>
                 <p>{movies[currentSlide]?.description}</p>
-                <button className="btn-primary">Book Tickets</button>
+                <button
+                  className="btn-primary"
+                  onClick={() => {
+                    navigate(`movie/${movies[currentSlide]?.id}`);
+                  }}
+                >
+                  Book Tickets
+                </button>
               </div>
             </div>
 
@@ -114,7 +121,12 @@ const Home = () => {
             <div className="movie-grid">
               {movies.map((movie) => (
                 <div className="movie-card" key={movie.id}>
-                  <div className="card-image-wrapper">
+                  <div
+                    className="card-image-wrapper"
+                    onClick={() => {
+                      navigate(`movie/${movie.id}`);
+                    }}
+                  >
                     {/* Using hr_image for the card poster as requested */}
                     <img
                       src={movie.hr_image}

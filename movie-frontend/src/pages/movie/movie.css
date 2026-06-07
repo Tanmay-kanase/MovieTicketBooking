@@ -157,3 +157,84 @@
     padding: 24px;
   }
 }
+.price-text {
+  font-weight: 700;
+  color: #10b981; /* Fresh emerald green for price metrics */
+  font-size: 1.1rem;
+}
+
+/* Inline Booking Form layout styling */
+.booking-form-inline {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 2px dashed #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.ticket-qty-selector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ticket-qty-selector label {
+  font-weight: 600;
+  color: #334155;
+}
+
+.ticket-qty-selector input {
+  width: 70px;
+  padding: 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.total-breakdown {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f0fdf4;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #bbf7d0;
+}
+
+.total-breakdown span {
+  color: #166534;
+  font-weight: 500;
+}
+
+.total-breakdown strong {
+  font-size: 1.3rem;
+  color: #14532d;
+}
+
+.booking-action-row {
+  display: flex;
+  gap: 10px;
+}
+
+.cancel-btn {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  padding: 14px 20px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex: 1;
+}
+
+.cancel-btn:hover:not(:disabled) {
+  background-color: #e2e8f0;
+}
+
+.booking-form-inline .book-btn {
+  flex: 2;
+  margin-top: 0;
+}

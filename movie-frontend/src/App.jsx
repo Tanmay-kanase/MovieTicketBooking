@@ -8,6 +8,7 @@ import MovieList from "./pages/admin/movie/movieList";
 import Movie from "./pages/movie/movie";
 import AdminHome from "./pages/admin/home/AdminHome";
 import Theaters from "./pages/admin/theather/Theater";
+import MyTickets from "./pages/tickets/myTickets";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="movie/:id" element={<Movie />} />
         <Route path="admin-dashboard" element={<AdminHome />} />
         <Route path="theater" element={<Theaters />} />
+        <Route path="my-tickets" element={<MyTickets />} />
       </Routes>
     </>
   );
