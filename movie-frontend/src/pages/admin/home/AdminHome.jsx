@@ -59,7 +59,7 @@ const AdminHome = () => {
         <section className="dashboard-movie-list">
           <div className="section-header">
             <h2>Current Movie Roster</h2>
-            <Link to="/admin/movies/new" className="btn-add">
+            <Link to="/add-movie" className="btn-add">
               + Add New Movie
             </Link>
           </div>

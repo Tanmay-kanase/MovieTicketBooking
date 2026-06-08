@@ -53,7 +53,6 @@ public class UserService {
             throw new UserAlreadyExistsException("Email already registered!");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole("USER");
         return userRepository.save(user);
     }
 

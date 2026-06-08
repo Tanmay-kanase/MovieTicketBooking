@@ -144,7 +144,6 @@ const SignIn = () => {
     <div className="signin-container">
       <div className="signin-card">
         <h2 className="signin-title">Welcome Back</h2>
-        <p className="signin-subtitle">Log in to book your tickets</p>
 
         {error && (
           <div
@@ -185,12 +184,6 @@ const SignIn = () => {
             />
           </div>
 
-          <div className="form-actions">
-            <a href="/forgot-password" className="text-link">
-              Forgot Password?
-            </a>
-          </div>
-
           <button type="submit" className="btn-primary" disabled={isLoading}>
             {isLoading ? "Signing in..." : "Sign In"}
           </button>
@@ -217,6 +210,34 @@ const SignIn = () => {
           <a href="/signup" className="text-link red-bold">
             Sign up now
           </a>
+        </div>
+
+        <div
+          className="admin-redirect-prompt"
+          style={{
+            marginTop: "20px",
+            textAlign: "center",
+            borderTop: "1px solid #eee",
+            paddingTop: "15px",
+          }}
+        >
+          <p style={{ fontSize: "14px", color: "#666", margin: 0 }}>
+            Authorized Personnel Only
+          </p>
+          <button
+            onClick={() => navigate("/admin-signin")}
+            className="text-link"
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              fontWeight: "bold",
+              padding: "5px 0",
+              fontSize: "14px",
+            }}
+          >
+            Go to Admin Portal
+          </button>
         </div>
       </div>
     </div>

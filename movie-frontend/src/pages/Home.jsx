@@ -78,7 +78,7 @@ const Home = () => {
             className="hero-carousel"
             style={{
               // Using vl_image for the carousel background as requested
-              backgroundImage: `url(${movies[currentSlide]?.vl_image})`,
+              backgroundImage: `url(${movies[currentSlide]?.hr_image})`,
             }}
           >
             <div className="hero-overlay">
@@ -120,26 +120,29 @@ const Home = () => {
 
             <div className="movie-grid">
               {movies.map((movie) => (
-                <div className="movie-card" key={movie.id}>
-                  <div
-                    className="card-image-wrapper"
-                    onClick={() => {
-                      navigate(`movie/${movie.id}`);
-                    }}
-                  >
-                    {/* Using hr_image for the card poster as requested */}
+                <div
+                  className="movie-card"
+                  key={movie.id}
+                  onClick={() => navigate(`movie/${movie.id}`)}
+                >
+                  <div className="card-image-wrapper">
                     <img
-                      src={movie.hr_image}
+                      src={movie.vl_image}
                       alt={movie.title}
                       className="movie-poster"
+                      // Fallback if the image fails to load
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src =
+                          "https://via.placeholder.com/300x450?text=No+Poster";
+                      }}
                     />
                   </div>
                   <div className="card-body">
                     <h3 className="movie-title">{movie.title}</h3>
                     <div className="movie-info">
-                      {/* Replaced Genre and Rating with Language and Duration based on your API payload */}
                       <span className="movie-genre">{movie.language}</span>
-                      <span className="movie-rating">
+                      <span className="movie-duration">
                         {movie.durationMinutes} mins
                       </span>
                     </div>

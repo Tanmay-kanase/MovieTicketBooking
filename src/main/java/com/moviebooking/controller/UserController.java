@@ -39,8 +39,7 @@ public class UserController {
         User user = userService.authenticateUser(credentials.get("email"), credentials.get("password"));
         ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(user.getEmail());
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                 .body(Map.of("message", "Login successful", "user", user));
     }
 
@@ -52,8 +51,6 @@ public class UserController {
         boolean isNewUser = (boolean) result.get("isNewUser");
 
         if (isNewUser) {
-            // Do not issue a cookie yet, return metadata so React prompts for a password
-            // setup
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
         } else {
             User user = (User) result.get("user");
